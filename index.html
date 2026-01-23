@@ -35,19 +35,325 @@
         .btn-glow:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(173, 53, 57, 0.4); }
         .btn-outline-hero { padding: 16px 32px; color: #fff; text-decoration: none; font-weight: 700; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 4px; transition: all 0.3s; }
 
-        /* --- CONTENT SECTION --- */
-        .content-section { padding: 140px 4%; max-width: var(--container-width); margin: 0 auto; }
-        .section-header { margin-bottom: 60px; border-left: 4px solid var(--accent); padding-left: 25px; }
-        .section-header h2 { font-family: 'Syncopate'; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 4px; }
-        
-        .unified-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 40px; }
-        .interactive-card { position: relative; background: var(--glass); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: all 0.5s; cursor: pointer; }
-        .interactive-card:hover { transform: translateY(-12px); border-color: var(--accent); }
+        /* --- WIDER CONTENT SECTION --- */
+        .content-section {
+            padding: 140px 4%;
+            /* Reduced side padding to utilize more width */
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
 
-        .iframe-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
-        .card-meta { padding: 30px; }
-        .card-meta span { color: var(--accent); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; }
-        .card-meta h3 { margin-top: 8px; font-size: 1.4rem; }
+        .section-header {
+            margin-bottom: 60px;
+            border-left: 4px solid var(--accent);
+            padding-left: 25px;
+        }
+
+        .section-header h2 {
+            font-family: 'Syncopate';
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .section-header p {
+            color: var(--text-dim);
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        /* --- ENHANCED GRID --- */
+        .unified-grid {
+            display: grid;
+            /* Wider min-size for a bigger card presence */
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 40px;
+            /* Increased gap for breathing room */
+        }
+
+        .interactive-card {
+            position: relative;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Spotlight Hover logic */
+        .interactive-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(230, 57, 70, 0.12), transparent 40%);
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .interactive-card:hover::before {
+            opacity: 1;
+        }
+
+        .interactive-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--accent);
+        }
+
+        /* Video Area */
+        .iframe-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+        }
+
+        .iframe-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Service Content */
+        .service-content {
+            padding: 60px 50px;
+        }
+
+        .service-content i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .card-meta {
+            padding: 30px;
+        }
+
+        .card-meta span {
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .card-meta h3,
+        .service-content h3 {
+            margin-top: 8px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .service-description {
+            color: var(--text-dim);
+            font-size: 1rem;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        /* --- CONTACT SECTION --- */
+        .contact-section {
+            padding: 120px 5%;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            max-width: var(--container-width);
+            margin: 100px auto 0;
+        }
+
+        .contact-section h2 {
+            font-family: 'Syncopate';
+            font-size: 1.8rem;
+            margin-bottom: 60px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .social-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            opacity: 0.4;
+        }
+
+        .social-item:hover {
+            opacity: 1;
+            color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .social-item i {
+            font-size: 1.4rem;
+        }
+
+        /* --- ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Fixes */
+        @media (max-width: 1024px) {
+            .unified-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .unified-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .social-row {
+                gap: 20px;
+            }
+
+            .social-item span {
+                display: none;
+            }
+
+            .hero h1 {
+                letter-spacing: 5px;
+            }
+        }
+
+        /* --- VIDEO MODAL STYLES --- */
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+
+        .video-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(33, 36, 42, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-container {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .video-modal.active .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-video-box {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #21242a;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(33, 36, 42, 0.8);
+            border: 1px solid var(--border);
+        }
+
+        #modalIframe {
+            width: 100%;
+            height: 100%;
+        }
+
+        .modal-footer {
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .modal-footer h3 {
+            font-family: 'Syncopate';
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .modal-footer p {
+            color: var(--accent);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 800;
+            margin-top: 5px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg) scale(1.2);
+            color: var(--accent);
+        }
+
+        .video-trigger {
+            cursor: pointer;
+        }
+
+        .center-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: white;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .interactive-card:hover .center-play {
+            transform: translate(-50%, -50%) scale(1.2);
+            color: var(--accent);
+        }
 
         /* --- CUSTOM PLAYER MODAL STYLES --- */
         .video-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; padding: 20px; }
@@ -77,18 +383,6 @@
         .theme-title { font-family: 'Syncopate'; font-size: 1.2rem; letter-spacing: 2px; }
 
         .close-btn { position: absolute; top: -50px; right: 0; background: none; border: none; color: #fff; cursor: pointer; font-size: 1.5rem; }
-
-        /* Services & Contact (Keeping your original) */
-        .service-content { padding: 60px 50px; }
-        .service-content i { font-size: 3rem; color: var(--accent); margin-bottom: 30px; display: block; }
-        .contact-section { padding: 120px 5%; text-align: center; border-top: 1px solid var(--border); max-width: var(--container-width); margin: 100px auto 0; }
-        .contact-section h2 { font-family: 'Syncopate'; font-size: 2.5rem; margin-bottom: 60px; letter-spacing: 8px; text-transform: uppercase; }
-        .social-row { display: flex; gap: 50px; flex-wrap: wrap; justify-content: center; }
-        .social-item { display: flex; align-items: center; gap: 15px; text-decoration: none; color: #fff; opacity: 0.4; transition: 0.3s; }
-        .social-item:hover { opacity: 1; color: var(--accent); }
-
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 
@@ -168,31 +462,64 @@
         </div>
     </div>
 
+    <!-- Services Section Starts Here -->
+
     <section class="content-section" id="services">
         <div class="section-header reveal">
             <h2>Services</h2>
             <p>Bespoke post-production and cinematography for global brands.</p>
         </div>
+
         <div class="unified-grid">
-            <div class="interactive-card reveal"><div class="service-content"><i data-lucide="clapperboard"></i><h3>Cinematography</h3><p>Advanced camera operation focused on evocative lighting.</p></div></div>
-            <div class="interactive-card reveal"><div class="service-content"><i data-lucide="scissors"></i><h3>Precision Editing</h3><p>Masterful pacing and rhythm that elevates narrative impact.</p></div></div>
-            <div class="interactive-card reveal"><div class="service-content"><i data-lucide="wand-2"></i><h3>Color Grading</h3><p>Professional-grade color science for high-end filmic aesthetic.</p></div></div>
+            <div class="interactive-card reveal">
+                <div class="service-content">
+                    <i data-lucide="clapperboard"></i>
+                    <h3>Cinematography</h3>
+                    <p class="service-description">Advanced camera operation focused on evocative lighting, purposeful
+                        framing, and visual depth.</p>
+                </div>
+            </div>
+            <div class="interactive-card reveal">
+                <div class="service-content">
+                    <i data-lucide="scissors"></i>
+                    <h3>Precision Editing</h3>
+                    <p class="service-description">Masterful pacing and rhythm that elevates narrative impact and
+                        maintains viewer retention.</p>
+                </div>
+            </div>
+            <div class="interactive-card reveal">
+                <div class="service-content">
+                    <i data-lucide="wand-2"></i>
+                    <h3>Color Grading</h3>
+                    <p class="service-description">Professional-grade color science used to manipulate mood and achieve
+                        a high-end filmic aesthetic.</p>
+                </div>
+            </div>
         </div>
     </section>
+
+    <!-- Collaboration Section Starts Here -->
 
     <section class="contact-section reveal" id="contact">
         <h2>Let's Collaborate</h2>
         <div class="social-row">
-            <a href="#" class="social-item"><i class="fab fa-instagram"></i><span>Instagram</span></a>
-            <a href="#" class="social-item"><i class="fab fa-youtube"></i><span>YouTube</span></a>
-            <a href="#" class="social-item"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+            <a href="https://www.instagram.com/ig_neerdace" class="social-item"><i
+                    class="fab fa-instagram"></i><span>Instagram</span></a>
+            <a href="https://www.youtube.com/@neerdace" class="social-item"><i
+                    class="fab fa-youtube"></i><span>YouTube</span></a>
+            <a href="https://discord.com/users/487214484239417344" class="social-item"><i
+                    class="fab fa-discord"></i><span>Discord</span></a>
+            <a href="https://www.facebook.com/nirdeshale" class="social-item"><i
+                    class="fab fa-facebook-f"></i><span>Facebook</span></a>
+            <a href="https://wa.me/+9779860369302" class="social-item"><i
+                    class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
         </div>
     </section>
 
-    <footer style="text-align: center; padding: 60px 0; color: #888; font-size: 0.75rem; letter-spacing: 3px;">
+    <footer
+        style="text-align: center; padding: 100px 0 60px; color: #888; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;">
         © 2026 NIRDESH ALE. ALL RIGHTS RESERVED.
     </footer>
-
     <script>
         lucide.createIcons();
 
