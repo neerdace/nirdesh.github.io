@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nirdesh Ale | Cinematic Portfolio</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        :root {
+            --bg: #21242A;
+            --accent: #ad3539;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --text-dim: #888;
+            --container-width: 1600px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        .grain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://grainy-gradients.vercel.app/noise.svg'); opacity: 0.03; pointer-events: none; z-index: 1000; }
+
+        /* --- HERO --- */
+        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 5%; background: linear-gradient(rgba(33, 36, 42, 0.7), rgba(33, 36, 42, 1)), url('https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&q=80&w=2000'); background-size: cover; background-position: center; background-attachment: fixed; }
+        .hero h1 { font-family: 'Syncopate', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: 12px; margin-bottom: 15px; text-transform: uppercase; }
+        .hero p { font-size: 0.9rem; color: var(--text-dim); letter-spacing: 5px; text-transform: uppercase; margin-bottom: 40px; }
+        .cta-group { display: flex; gap: 20px; }
+        .btn-glow { padding: 16px 32px; background: var(--accent); color: #fff; text-decoration: none; font-weight: 700; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; border-radius: 4px; transition: all 0.4s; }
+        .btn-glow:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(173, 53, 57, 0.4); }
+        .btn-outline-hero { padding: 16px 32px; color: #fff; text-decoration: none; font-weight: 700; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 4px; transition: all 0.3s; }
+
+        /* --- CONTENT SECTION --- */
+        .content-section { padding: 140px 4%; max-width: var(--container-width); margin: 0 auto; }
+        .section-header { margin-bottom: 60px; border-left: 4px solid var(--accent); padding-left: 25px; }
+        .section-header h2 { font-family: 'Syncopate'; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 4px; }
+        
+        .unified-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 40px; }
+        .interactive-card { position: relative; background: var(--glass); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; transition: all 0.5s; cursor: pointer; }
+        .interactive-card:hover { transform: translateY(-12px); border-color: var(--accent); }
+
+        .iframe-wrapper { position: relative; padding-bottom: 56.25%; height: 0; background: #000; }
+        .card-meta { padding: 30px; }
+        .card-meta span { color: var(--accent); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; }
+        .card-meta h3 { margin-top: 8px; font-size: 1.4rem; }
+
+        /* --- CUSTOM PLAYER MODAL STYLES --- */
+        .video-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; padding: 20px; }
+        .video-modal.active { opacity: 1; pointer-events: all; }
+        .modal-overlay { position: absolute; width: 100%; height: 100%; background: rgba(15, 17, 20, 0.98); backdrop-filter: blur(15px); }
+        .modal-container { position: relative; width: 100%; max-width: 1100px; z-index: 10; }
+
+        .player-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px 12px 0 0; overflow: hidden; border: 1px solid var(--border); }
+        #customPlayer { width: 100%; height: 100%; }
+        
+        /* The Shield protects the YT logo from being clicked */
+        .video-shield { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5; cursor: pointer; }
+
+        .center-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; color: #fff; z-index: 6; pointer-events: none; transition: 0.3s; opacity: 0.8; }
+
+        .custom-controls { background: #1a1d23; padding: 25px; border-radius: 0 0 12px 12px; border: 1px solid var(--border); border-top: none; }
+        .control-row { display: flex; align-items: center; gap: 20px; }
+        
+        .theme-btn { background: none; border: none; color: var(--accent); cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
+        .theme-btn:hover { transform: scale(1.1); color: #fff; }
+
+        .progress-container { flex-grow: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; cursor: pointer; position: relative; }
+        .progress-bar { height: 100%; background: var(--accent); width: 0%; border-radius: 10px; position: relative; }
+        
+        .time-display { font-size: 0.8rem; color: #888; font-family: monospace; min-width: 45px; }
+        .meta-info { margin-top: 15px; }
+        .theme-title { font-family: 'Syncopate'; font-size: 1.2rem; letter-spacing: 2px; }
+
+        .close-btn { position: absolute; top: -50px; right: 0; background: none; border: none; color: #fff; cursor: pointer; font-size: 1.5rem; }
+
+        /* Services & Contact (Keeping your original) */
+        .service-content { padding: 60px 50px; }
+        .service-content i { font-size: 3rem; color: var(--accent); margin-bottom: 30px; display: block; }
+        .contact-section { padding: 120px 5%; text-align: center; border-top: 1px solid var(--border); max-width: var(--container-width); margin: 100px auto 0; }
+        .contact-section h2 { font-family: 'Syncopate'; font-size: 2.5rem; margin-bottom: 60px; letter-spacing: 8px; text-transform: uppercase; }
+        .social-row { display: flex; gap: 50px; flex-wrap: wrap; justify-content: center; }
+        .social-item { display: flex; align-items: center; gap: 15px; text-decoration: none; color: #fff; opacity: 0.4; transition: 0.3s; }
+        .social-item:hover { opacity: 1; color: var(--accent); }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+
+<body>
+
+    <div class="grain"></div>
+
+    <section class="hero">
+        <h1 class="reveal">NIRDESH ALE</h1>
+        <p class="reveal">Visual Storytelling • Editorial • Cinema</p>
+        <div class="cta-group reveal">
+            <a href="#showreel" class="btn-glow">View Showreel</a>
+            <a href="#contact" class="btn-outline-hero">Let's Collaborate</a>
+        </div>
+    </section>
+
+    <section class="content-section" id="showreel">
+        <div class="section-header reveal">
+            <h2>Selected Works</h2>
+            <p>Click a project to view the cinematic experience.</p>
+        </div>
+
+        <div class="unified-grid">
+            <div class="interactive-card reveal video-trigger" data-video="Yc4NF8kOM6c" data-title="Custom Cinematic Project" data-category="Editorial / Color">
+                <div class="iframe-wrapper">
+                    <img src="https://img.youtube.com/vi/Yc4NF8kOM6c/maxresdefault.jpg" style="width:100%; height:100%; object-fit:cover; position:absolute;">
+                    <div class="center-play"><i class="fas fa-play-circle"></i></div>
+                </div>
+                <div class="card-meta">
+                    <span>Editorial / Color</span>
+                    <h3>Custom Cinematic Project</h3>
+                </div>
+            </div>
+
+            <div class="interactive-card reveal video-trigger" data-video="dv8pAiu2peQ" data-title="Eternal Summer" data-category="Cinematography">
+                <div class="iframe-wrapper">
+                    <img src="https://img.youtube.com/vi/dv8pAiu2peQ/maxresdefault.jpg" style="width:100%; height:100%; object-fit:cover; position:absolute;">
+                    <div class="center-play"><i class="fas fa-play-circle"></i></div>
+                </div>
+                <div class="card-meta">
+                    <span>Cinematography</span>
+                    <h3>Eternal Summer</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="videoModal" class="video-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <button class="close-btn"><i data-lucide="x"></i></button>
+            
+            <div class="player-wrapper">
+                <div id="customPlayer"></div>
+                <div class="video-shield" id="playPauseBig"></div>
+                <div class="center-play" id="centerPlay"><i class="fas fa-play"></i></div>
+            </div>
+
+            <div class="custom-controls">
+                <div class="control-row">
+                    <button id="mainPlayBtn" class="theme-btn"><i class="fas fa-play"></i></button>
+                    <div class="time-display"><span id="currTime">0:00</span></div>
+                    
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    
+                    <div class="time-display"><span id="totalTime">0:00</span></div>
+                    <button id="muteBtn" class="theme-btn"><i class="fas fa-volume-up"></i></button>
+                </div>
+                
+                <div class="meta-info">
+                    <p id="modalTitle" class="theme-title">PROJECT TITLE</p>
+                    <p id="modalCategory" style="color: var(--accent); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; margin-top: 5px;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content-section" id="services">
+        <div class="section-header reveal">
+            <h2>Services</h2>
+            <p>Bespoke post-production and cinematography for global brands.</p>
+        </div>
+        <div class="unified-grid">
+            <div class="interactive-card reveal"><div class="service-content"><i data-lucide="clapperboard"></i><h3>Cinematography</h3><p>Advanced camera operation focused on evocative lighting.</p></div></div>
+            <div class="interactive-card reveal"><div class="service-content"><i data-lucide="scissors"></i><h3>Precision Editing</h3><p>Masterful pacing and rhythm that elevates narrative impact.</p></div></div>
+            <div class="interactive-card reveal"><div class="service-content"><i data-lucide="wand-2"></i><h3>Color Grading</h3><p>Professional-grade color science for high-end filmic aesthetic.</p></div></div>
+        </div>
+    </section>
+
+    <section class="contact-section reveal" id="contact">
+        <h2>Let's Collaborate</h2>
+        <div class="social-row">
+            <a href="#" class="social-item"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+            <a href="#" class="social-item"><i class="fab fa-youtube"></i><span>YouTube</span></a>
+            <a href="#" class="social-item"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 60px 0; color: #888; font-size: 0.75rem; letter-spacing: 3px;">
+        © 2026 NIRDESH ALE. ALL RIGHTS RESERVED.
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Reveal Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Spotlight Effect
+        const cards = document.querySelectorAll(".interactive-card");
+        document.addEventListener("mousemove", (e) => {
+            cards.forEach((card) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+                card.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+            });
+        });
+
+        /* --- YOUTUBE API LOGIC --- */
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        let player;
+        let progressInterval;
+
+        function loadVideo(videoId) {
+            if (player) { player.destroy(); }
+            player = new YT.Player('customPlayer', {
+                height: '100%',
+                width: '100%',
+                videoId: videoId,
+                playerVars: { 'autoplay': 1, 'controls': 0, 'modestbranding': 1, 'rel': 0, 'iv_load_policy': 3, 'showinfo': 0 },
+                events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
+            });
+        }
+
+        function onPlayerReady(event) {
+            const playBtn = document.getElementById('mainPlayBtn');
+            const centerPlay = document.getElementById('centerPlay');
+            const progressContainer = document.getElementById('progressContainer');
+            const muteBtn = document.getElementById('muteBtn');
+
+            // Play/Pause
+            function togglePlay() {
+                if (player.getPlayerState() === YT.PlayerState.PLAYING) { player.pauseVideo(); } 
+                else { player.playVideo(); }
+            }
+
+            document.getElementById('playPauseBig').addEventListener('click', togglePlay);
+            playBtn.addEventListener('click', togglePlay);
+
+            // Mute
+            muteBtn.addEventListener('click', () => {
+                if (player.isMuted()) { player.unMute(); muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; } 
+                else { player.mute(); muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>'; }
+            });
+
+            // Seek
+            progressContainer.addEventListener('click', (e) => {
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                player.seekTo(pos * player.getDuration());
+            });
+
+            startTracking();
+        }
+
+        function onPlayerStateChange(event) {
+            const playBtn = document.getElementById('mainPlayBtn');
+            const centerPlay = document.getElementById('centerPlay');
+            if (event.data === YT.PlayerState.PLAYING) {
+                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                centerPlay.style.opacity = "0";
+            } else {
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                centerPlay.style.opacity = "0.8";
+            }
+        }
+
+        function startTracking() {
+            progressInterval = setInterval(() => {
+                if (player && player.getCurrentTime) {
+                    const cur = player.getCurrentTime();
+                    const dur = player.getDuration();
+                    document.getElementById('progressBar').style.width = (cur / dur * 100) + "%";
+                    document.getElementById('currTime').innerText = formatTime(cur);
+                    document.getElementById('totalTime').innerText = formatTime(dur);
+                }
+            }, 500);
+        }
+
+        function formatTime(time) {
+            time = Math.round(time);
+            let min = Math.floor(time / 60);
+            let sec = time - min * 60;
+            return min + ":" + (sec < 10 ? '0' + sec : sec);
+        }
+
+        // Initialize Triggers
+        document.querySelectorAll('.video-trigger').forEach(card => {
+            card.addEventListener('click', () => {
+                const id = card.getAttribute('data-video');
+                document.getElementById('modalTitle').innerText = card.getAttribute('data-title');
+                document.getElementById('modalCategory').innerText = card.getAttribute('data-category');
+                loadVideo(id);
+                document.getElementById('videoModal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close Logic
+        function closeModal() {
+            document.getElementById('videoModal').classList.remove('active');
+            if (player) player.stopVideo();
+            clearInterval(progressInterval);
+            document.body.style.overflow = 'auto';
+        }
+
+        document.querySelector('.close-btn').addEventListener('click', closeModal);
+        document.querySelector('.modal-overlay').addEventListener('click', closeModal);
+    </script>
+</body>
+</html>
